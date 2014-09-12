@@ -1,0 +1,13 @@
+{
+  "name": "sensortag",
+  "description": "",
+  "homepage": "",
+  "keywords": [
+  ],
+  "author": "",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer",
+    "paper-elements": "Polymer/paper-elements"
+  }
+}

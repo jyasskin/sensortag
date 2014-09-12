@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "sensortag",
+  "description": "",
+  "version": "0.0.1",
+  "minimum_chrome_version": "23",
+  "icons": {
+    "16": "assets/icon_180.png",
+    "128": "assets/icon_180.png"
+  },
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "bluetooth": {
+    "low_energy": true,
+    "uuids": [
+      "180a",
+      "f000aa00-0451-4000-b000-000000000000",
+      "f000aa10-0451-4000-b000-000000000000",
+      "f000aa20-0451-4000-b000-000000000000",
+      "f000aa30-0451-4000-b000-000000000000",
+      "f000aa40-0451-4000-b000-000000000000",
+      "f000aa50-0451-4000-b000-000000000000",
+      "f000aa60-0451-4000-b000-000000000000"
+    ]
+  }
+}
