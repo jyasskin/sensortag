@@ -3,7 +3,7 @@
   "name": "sensortag",
   "description": "",
   "version": "0.0.1",
-  "minimum_chrome_version": "23",
+  "minimum_chrome_version": "37",
   "icons": {
     "16": "assets/icon_180.png",
     "128": "assets/icon_180.png"
