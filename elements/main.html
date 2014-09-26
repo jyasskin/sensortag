@@ -3,7 +3,7 @@
 <link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
@@ -26,11 +26,11 @@
 
 <section>
   <p>Device:
-    <paper-dropdown selected="{{selectedDeviceAddress}}" valueattr="address">
+    <paper-dropdown-menu selected="{{selectedDeviceAddress}}" valueattr="address">
       <template repeat="{{device in deviceList}}">
         <paper-item address="{{device.address}}" label="{{device.name}}"></paper-item>
       </template>
-    </paper-dropdown>
+    </paper-dropdown-menu>
   </p>
 </section>
 
