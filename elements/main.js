@@ -17,15 +17,43 @@ var supportedServices = new Set([
   Sensortag.uuid.humidity
 ]);
 
-Polymer('sensortag-main', {
-  bluetoothState: 'bluetooth-searching',
+Polymer({
+  is: 'sensortag-main',
 
-  created: function() {
-    this.selectedDevice = null;
+  properties: {
+    bluetoothState: {
+      type: String,
+      value: 'bluetooth-searching',
+    },
+    connectingDevice: {
+      type: Object,
+      value: null,
+    },
+    selectedDevice: {
+      type: Object,
+      value: null,
+      observer: 'selectedDeviceChanged',
+    },
+    temperature: {
+      type: Object,
+      value: function() { return new SensortagTemperature(this, 'temperature'); },
+    },
+    accelerometer: {
+      type: Object,
+      value: function() { return new SensortagAccelerometer(this, 'accelerometer'); },
+    },
+    humidity: {
+      type: Object,
+      value: function() { return new SensortagHumidity(this, 'humidity'); },
+    },
+  },
 
-    this.temperature = new SensortagTemperature();
-    this.accelerometer = new SensortagAccelerometer();
-    this.humidity = new SensortagHumidity();
+  bluetoothStateIcon: function(bluetoothState) {
+    return 'device:' + bluetoothState;
+  },
+
+  someOf: function() {
+   return Array.prototype.some.call(arguments, function(arg) { return arg; });
   },
 
   ready: function() {
@@ -66,7 +94,7 @@ Polymer('sensortag-main', {
           self.error(error);
         } else {
           self.error('Could not connect to "' + device.name +
-                     '" (' + device.address + ')')
+                     '" (' + device.address + ')');
         }
       }).then(function() {
         self.connectingDevice = null;
@@ -90,6 +118,9 @@ Polymer('sensortag-main', {
 
   selectedDeviceChanged: function() {
     var self = this;
+    if (!self.temperature || !self.accelerometer || !self.humidity) {
+      return;
+    }
     self.temperature.clearService();
     self.accelerometer.clearService();
     self.humidity.clearService();
@@ -110,6 +141,10 @@ Polymer('sensortag-main', {
       self.bluetoothState = 'bluetooth';
     }
   },
+
+  toFixed: function(value, precision) {
+    return (+value).toFixed(precision);
+  },
 });
 
 // Maps an instanceId to the object to fire events on.
@@ -121,9 +156,5 @@ navigator.bluetooth.addEventListener('characteristicvaluechanged', function(e) {
     target.characteristicValueChanged(characteristic);
   }
 });
-
-PolymerExpressions.prototype.toFixed = function(value, precision) {
-  return (+value).toFixed(precision);
-};
 
 })();

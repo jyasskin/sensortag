@@ -1,82 +1,74 @@
-<link rel="import" href="../bower_components/core-icons/core-icons.html">
-<link rel="import" href="../bower_components/core-icons/device-icons.html">
-<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/device-icons.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../bower_components/web-bluetooth-chrome-app/bluetooth.html">
 <link rel="import" href="../lib/sensortag-accelerometer.html">
 <link rel="import" href="../lib/sensortag-humidity.html">
 <link rel="import" href="../lib/sensortag-temperature.html">
 <link rel="import" href="../lib/sensortag.html">
 
-<polymer-element name="sensortag-main">
+<dom-module id="sensortag-main">
 <template>
-<core-toolbar>
+<paper-toolbar>
   <paper-icon-button icon="menu"></paper-icon-button>
   <span flex>sensortag toolbar</span>
-  <paper-fab icon="device:{{bluetoothState}}" on-tap="{{scanBluetooth}}"></paper-fab>
-</core-toolbar>
+  <paper-fab icon="{{bluetoothStateIcon(bluetoothState)}}" on-tap="scanBluetooth"></paper-fab>
+</paper-toolbar>
 
 <paper-toast id="error" text=""></paper-toast>
 
-<template if="{{!connectingDevice && !selectedDevice}}">
-  <p>Select a device with the button at the top-right.</p>
-</template>
+<p hidden$="{{someOf(connectingDevice, selectedDevice)}}">
+  Select a device with the button at the top-right.
+</p>
 
-<template if="{{connectingDevice}}">
-  <p>Connecting to {{connectingDevice.name}} @ {{connectingDevice.address}} <paper-spinner active></paper-spinner></p>
-</template>
+<p hidden$="{{!connectingDevice}}">
+  Connecting to <span>{{connectingDevice.name}}</span> @ <span>{{connectingDevice.instanceId}}</span> <paper-spinner active$="{{connectingDevice}}"></paper-spinner>
+</p>
 
-<template if="{{selectedDevice}}">
+<template is="dom-if" if="{{selectedDevice}}">
   <section>
     <p>
-      Device: {{selectedDevice.name}} @ {{selectedDevice.address}}
-      <paper-button raised on-click="{{disconnect}}">Disconnect</paper-button>
+      Device: <span>{{selectedDevice.name}}</span> @ <span>{{selectedDevice.instanceId}}</span>
+      <paper-button raised on-click="disconnect">Disconnect</paper-button>
     </p>
   </section>
 
   <section>
-    <template bind="{{temperature}}">
-      <h1>Temperature</h1>
-      <template if="{{loaded}}">
-        <p>Ambient Temperature: {{ambientTemperature * 9/5 + 32 | toFixed(0)}}˚F</p>
-        <p>Object Temperature: {{objectTemperature * 9/5 + 32 | toFixed(0)}}˚F</p>
-      </template>
-    </template>
+    <h1>Temperature</h1>
+    <div hidden$="{{!temperature.loaded}}">
+      <p>Ambient Temperature: <span>{{toFixed(temperature.ambientTemperature, 0)}}</span>˚C</p>
+      <p>Object Temperature: <span>{{toFixed(temperature.objectTemperature, 0)}}</span>˚C</p>
+    </div>
   </section>
 
   <section>
-    <template bind="{{accelerometer}}">
-      <h1>Accelerometer</h1>
+    <h1>Accelerometer</h1>
 
-      <template if="{{loaded}}">
-        <table>
-          <tr><th>Axis</th><th>g</th></tr>
-          <tr><td>X</td><td>{{x | toFixed(2)}}</td></tr>
-          <tr><td>Y</td><td>{{y | toFixed(2)}}</td></tr>
-          <tr><td>Z</td><td>{{z | toFixed(2)}}</td></tr>
-        </table>
-      </template>
-    </template>
+    <div hidden$="{{!accelerometer.loaded}}">
+      <table>
+        <tr><th>Axis</th><th>g</th></tr>
+        <tr><td>X</td><td>{{toFixed(accelerometer.x, 2)}}</td></tr>
+        <tr><td>Y</td><td>{{toFixed(accelerometer.y, 2)}}</td></tr>
+        <tr><td>Z</td><td>{{toFixed(accelerometer.z, 2)}}</td></tr>
+      </table>
+    </div>
   </section>
 
   <section>
-    <template bind="{{humidity}}">
-      <h1>Humidity</h1>
+    <h1>Humidity</h1>
 
-      <template if="{{loaded}}">
-        <p>Temperature: {{temperature * 9/5 + 32 | toFixed(0)}}˚F</p>
-        <p>Relative Humidity: {{relativeHumidity | toFixed(2)}}%</p>
-      </template>
-    </template>
+    <div hidden$="{{!humidity.loaded}}">
+      <p>Temperature: <span>{{toFixed(humidity.temperature, 0)}}</span>˚C</p>
+      <p>Relative Humidity: <span>{{toFixed(humidity.relativeHumidity, 2)}}</span>%</p>
+    </div>
   </section>
 </template>
 
 </template>
-
+</dom-module>
 <script src="main.js"></script>
-</polymer-element>
