@@ -1,13 +1,12 @@
 {
   "name": "sensortag",
-  "description": "",
-  "homepage": "",
+  "description": "A demo application using the TI Sensortag",
+  "homepage": "https://github.com/jyasskin/sensortag",
   "keywords": [],
   "author": "",
   "private": true,
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0.0",
-    "web-bluetooth-chrome-app": "../web-bluetooth-chrome-app-polyfill#update-polymer-1.0",
     "paper-toolbar": "PolymerElements/paper-toolbar#^1.0.0",
     "paper-icon-button": "PolymerElements/paper-icon-button#^1.0.0",
     "paper-toast": "PolymerElements/paper-toast#^1.0.0",
